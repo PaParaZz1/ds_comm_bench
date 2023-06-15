@@ -93,14 +93,14 @@ def print_header(args, comm_op):
         world_size = 2
     else:
         world_size = dist.get_world_size()
-    tput = f"Throughput ({args.bw_unit})"
+    tput = f"AlgBW ({args.bw_unit})"
     busbw = f"BusBW ({args.bw_unit})"
-    header = f"\n---- Performance of {comm_op} on {world_size} devices ---------------------------------------------------------\n"
+    header = f"\n------------------ Performance of {comm_op} on {world_size} devices ------------------------------------------------------------\n"
     duration_str = "Duration"
     if args.raw:
         duration_str += " (us)"
-    header += f"{'Size (Bytes)':20s} {'Description':25s} {duration_str:20s} {tput:20s} {busbw:20s}\n"
-    header += "----------------------------------------------------------------------------------------------------"
+    header += f"{'Size (Bytes)':20s} {'Description':25s} {duration_str:20s} {tput :20s} {busbw:20s}\n"
+    header += "----------------------------------------------------------------------------------------------------------------------"
     print_rank_0(header)
 
 
@@ -109,17 +109,17 @@ def print_header_node_view(args, comm_op):
         world_size = 2
     else:
         world_size = dist.get_world_size()
-    tput = f"Throughput ({args.bw_unit})"
+    tput = f"AlgBW ({args.bw_unit})"
     busbw = f"BusBW ({args.bw_unit})"
-    header = f"\n---- Performance of {comm_op} on {world_size} devices ---------------------------------------------------------\n"
+    header = f"\n----------------- Performance of {comm_op} on {world_size} devices ------------------------------------------------------------\n"
     duration_str, duration_local_str = "Duration", "Rank Duration"
     if args.raw:
         duration_str += " (us)"
         duration_local_str += " (us)"
     header += (
-        f"{'Size (Bytes)':20s} {'Description':25s} {duration_str:20s} {duration_local_str:20s} {tput:20s} {busbw:20s}\n"
+        f"{'Size (Bytes)':20s} {'Description':25s} {duration_str:20s} {duration_local_str:20s} {tput :20s} {busbw:20s}\n"
     )
-    header += "----------------------------------------------------------------------------------------------------"
+    header += "----------------------------------------------------------------------------------------------------------------------"
     print_node_0(header)
 
 

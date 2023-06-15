@@ -83,7 +83,7 @@ def run_pt2pt(local_rank, args):
     if args.scan:
         # Create list of message sizes
         M_LIST = []
-        for x in (2**p for p in range(1, args.maxsize)):
+        for x in (2**p for p in range(18, args.maxsize)):  # 18 -> 4M
             M_LIST.append(x)
 
         sync_all()

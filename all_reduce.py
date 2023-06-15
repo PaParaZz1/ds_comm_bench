@@ -60,7 +60,7 @@ def run_all_reduce(local_rank, args):
 
     if args.scan:
         M_LIST = []
-        for x in (2**p for p in range(1, args.maxsize)):
+        for x in (2**p for p in range(18, args.maxsize)):  # 18 -> 4M
             M_LIST.append(x)
 
         sync_all()
@@ -128,6 +128,7 @@ def timed_all_reduce_node_view(input, args):
         dist.all_reduce(input, async_op=args.async_op)
     sync_cuda()
     rank_wait_time = time.perf_counter() - pre
+    rank_wait_time /= args.trials
 
     sync_all()
     duration = time.perf_counter() - pre
@@ -138,12 +139,13 @@ def timed_all_reduce_node_view(input, args):
     n = dist.get_world_size()
     tput, busbw = get_bw("all_reduce", size, avg_duration, args)
     tput_str, busbw_str, duration_str = get_metric_strings(args, tput, busbw, avg_duration)
+    rank_wait_time_str = "{:.5f}".format(rank_wait_time)
     desc = f"{input.nelement()}x{input.element_size()}"
 
     if not args.raw:
         size = convert_size(size)
 
-    print_node_0(f"{size:<20} {desc:25s} {duration_str:20s} {rank_wait_time:20s} {tput_str:20s} {busbw_str:20s}")
+    print_node_0(f"{size:<20} {desc:25s} {duration_str:20s} {rank_wait_time_str:20s} {tput_str:20s} {busbw_str:20s}")
 
 
 def run_all_reduce_node_view(local_rank, args):
@@ -160,7 +162,7 @@ def run_all_reduce_node_view(local_rank, args):
 
     if args.scan:
         M_LIST = []
-        for x in (2**p for p in range(1, args.maxsize)):
+        for x in (2**p for p in range(18, args.maxsize)):
             M_LIST.append(x)
 
         sync_all()
@@ -192,3 +194,4 @@ if __name__ == "__main__":
     rank = args.local_rank
     init_processes(local_rank=rank, args=args)
     run_all_reduce(local_rank=rank, args=args)
+    #run_all_reduce_node_view(local_rank=rank, args=args)

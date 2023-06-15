@@ -4,6 +4,8 @@ The intent of these benchmarks is to measure communication latency/bw of deepspe
 - Easily debug which layer of the communication software stack hangs or performance degradations originate from.
 - Measure the expected communication performance of either DeepSpeed comms or pure PyTorch distributed
 
+For more details about the performance metric, please refer to the original doc of [NCCL Tests](https://github.com/NVIDIA/nccl-tests/blob/master/doc/PERFORMANCE.md)
+
 To run benchmarks, there are two options:
 
 1. Run a single communication operation:
@@ -20,12 +22,12 @@ deepspeed all_reduce.py --scan
 
 Benchmark pure PyTorch distributed comms (without importing or using DeepSpeed) with MPI
 <pre>
-mpirun -np 16 --hostfile ${HOSTFILE} -x LD_LIBRARY_PATH -x PATH -x LD_PRELOAD python all_reduce.py --scan --dist="torch"
+mpirun -np 16 --hostfile ${HOSTFILE} -x LD_LIBRARY_PATH -x PATH -x LD_PRELOAD python all_reduce.py --scan --dist="torch" --maxsize=27
 </pre>
 
 or Slurm
 <pre>
-srun -n 16 python all_reduce.py --scan --dist="torch"
+srun -n 16 python all_reduce.py --scan --dist="torch" --maxsize=27
 </pre>
 
 

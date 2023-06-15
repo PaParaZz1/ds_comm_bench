@@ -59,7 +59,7 @@ def run_all_to_all(local_rank, args):
 
     if args.scan:
         M_LIST = []
-        for x in (2**p for p in range(1, args.maxsize)):
+        for x in (2**p for p in range(18, args.maxsize)):  # 18 -> 4M
             M_LIST.append(x)
 
         sync_all()
